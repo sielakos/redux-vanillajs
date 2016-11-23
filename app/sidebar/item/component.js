@@ -1,6 +1,7 @@
 import {addClass} from 'utils';
 import {REMOVE_DIAGRAM} from '../reducer';
 import {ACTION_EVENT_NAME} from 'actionEventName';
+import {SELECT_DIAGRAM} from 'bpmnViewer';
 
 const template = `
   <a class="sidebar-item-name"></a>
@@ -21,6 +22,19 @@ export function component(node) {
 
     actionEvent.reduxAction = {
       type: REMOVE_DIAGRAM,
+      name: lastName
+    };
+
+    document.dispatchEvent(actionEvent);
+  });
+
+  nameElement.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const actionEvent = new Event(ACTION_EVENT_NAME);
+
+    actionEvent.reduxAction = {
+      type: SELECT_DIAGRAM,
       name: lastName
     };
 

@@ -38,3 +38,15 @@ html {
   padding: 1rem;
   border-bottom: 1px solid $color-red;
 }
+
+.viewer {
+  min-height: 60vh;
+  position: relative;
+  overflow: scroll;
+
+  .bjs-container {
+    position: absolute !important;
+    height: 100%;
+  }
+}
+

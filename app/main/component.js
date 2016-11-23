@@ -1,6 +1,7 @@
 import {component as sidebarComponent} from 'sidebar';
 import {mountComponents, get, connect} from 'utils';
 import {component as uploaderComponent} from 'uploader';
+import {component as bpmnViewerComponent} from 'bpmnViewer';
 
 const template = `
   <div class="content">
@@ -9,6 +10,7 @@ const template = `
     </div>
     <div class="main-content">
       <div class="uploader"></div>
+      <div class="viewer"></div>
     </div>
   </div>
 `;
@@ -24,6 +26,10 @@ export function component(node) {
     {
       target: '.uploader',
       component: uploaderComponent
+    },
+    {
+      target: '.viewer',
+      component: bpmnViewerComponent
     }
   ]);
 }
