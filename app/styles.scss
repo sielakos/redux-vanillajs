@@ -1,0 +1,35 @@
+$color-red: #ff9c9b;
+
+$color-blue: #9c9bff;
+$color-dark-blue: darken($color-blue, 15%);
+
+$color-green: #9bff9c;
+
+html {
+  font-size: 16px;
+  color: $color-dark-blue;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar {
+  padding: 2rem;
+  border: 1px solid $color-red;
+  flex: 1 1 20vw;
+  margin: 0.5rem;
+}
+
+.main {
+  padding: 2rem;
+  border: 1px solid $color-red;
+  flex: 2 2 80vw;
+  margin: 0.5rem;
+}
+
+.list {
+  margin: 0;
+  list-style: none inside;
+}

@@ -6,7 +6,7 @@ module.exports = {
   target: 'web',
   entry: {
     app: './app/index.js',
-    vendor: ['redux'],
+    vendor: ['redux', 'lodash.isequal'],
   },
   output: {
     filename: '[name].js',
@@ -20,6 +20,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader'
+      },
       {
         test: /\.(jpg|png)$/,
         loader: 'url-loader'
@@ -38,13 +42,17 @@ module.exports = {
         ],
         loader: 'babel-loader',
         options: {
-          "presets": [
-            ["latest", {
-              "es2015": {
-                "modules": false
+          presets: [
+            [
+              'latest',
+              {
+                es2015: {
+                  modules: false
+                }
               }
-            }]
-          ]
+            ]
+          ],
+          plugins: ['transform-object-rest-spread']
         }
       }
     ]

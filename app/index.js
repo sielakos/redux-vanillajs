@@ -1,14 +1,21 @@
+import 'styles.scss';
+
 import {createStore} from 'redux';
-import isOdd from 'utils/isOdd';
+import {reducer, component} from 'main';
+import {ACTION_EVENT_NAME} from 'actionEventName';
 
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const updateComponent = component(document.getElementById('app'));
 
-console.log(document.body);
+updateComponent(store.getState());
 
-numbers.forEach(number => {
-  const node = document.createElement('div');
+store.subscribe(() => {
+  const state = store.getState();
 
-  node.innerHTML = `${number} => ${isOdd(number)}`;
+  //In timeout to avoid infinite loop when using dispatch
+  setTimeout(updateComponent.bind(null, state), 0);
+});
 
-  document.body.appendChild(node);
+document.addEventListener(ACTION_EVENT_NAME, ({reduxAction}) => {
+  store.dispatch(reduxAction);
 });
