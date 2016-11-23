@@ -3,7 +3,7 @@ export const REMOVE_DIAGRAM = 'REMOVE_DIAGRAM';
 export const CHANGE_DIAGRAM_NAME = 'CHANGE_DIAGRAM_NAME';
 
 export function reducer(
-  state = {list: ['a', 'b', 'c'], diagrams: {a: 1, b: 2, c: 3}},
+  state = {list: [], diagrams: {}},
   action
 ) {
   switch (action.type) {

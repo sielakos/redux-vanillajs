@@ -22,7 +22,7 @@ html {
   margin: 0.5rem;
 }
 
-.main {
+.main-content {
   padding: 2rem;
   border: 1px solid $color-red;
   flex: 2 2 80vw;
@@ -32,4 +32,9 @@ html {
 .list {
   margin: 0;
   list-style: none inside;
+}
+
+.upload-form {
+  padding: 1rem;
+  border-bottom: 1px solid $color-red;
 }
