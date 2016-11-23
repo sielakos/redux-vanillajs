@@ -1,9 +1,13 @@
+import diagram1 from './bpmn/diagram_1';
+import diagram2 from './bpmn/diagram_2';
+import diagram3 from './bpmn/diagram_3';
+
 export const ADD_DIAGRAM = 'ADD_DIAGRAM';
 export const REMOVE_DIAGRAM = 'REMOVE_DIAGRAM';
 export const CHANGE_DIAGRAM_NAME = 'CHANGE_DIAGRAM_NAME';
 
 export function reducer(
-  state = {list: [], diagrams: {}},
+  state = {list: ['a', 'b', 'c'], diagrams: {a: diagram1, b: diagram2, c: diagram3}},
   action
 ) {
   switch (action.type) {
