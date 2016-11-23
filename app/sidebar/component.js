@@ -28,8 +28,8 @@ function createComponent(node) {
 function getProperties({list, diagrams}) {
   return {
     list: list.map(name => ({
-      name,
-      diagram: diagrams[name]
+      ...diagrams[name],
+      name
     }))
   };
 }

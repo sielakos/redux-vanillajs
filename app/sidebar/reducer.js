@@ -1,13 +1,28 @@
 import diagram1 from './bpmn/diagram_1';
 import diagram2 from './bpmn/diagram_2';
 import diagram3 from './bpmn/diagram_3';
+import {reducer as itemReducer, CHANGE_DIAGRAM_NAME, EDIT_SIDEBAR_ITEM} from './item';
 
 export const ADD_DIAGRAM = 'ADD_DIAGRAM';
 export const REMOVE_DIAGRAM = 'REMOVE_DIAGRAM';
-export const CHANGE_DIAGRAM_NAME = 'CHANGE_DIAGRAM_NAME';
+
+const defaultState = {
+  list: ['a', 'b', 'c'],
+  diagrams: {
+    a: {
+      diagram: diagram1
+    },
+    b: {
+      diagram: diagram2
+    },
+    c: {
+      diagram: diagram3
+    }
+  }
+};
 
 export function reducer(
-  state = {list: ['a', 'b', 'c'], diagrams: {a: diagram1, b: diagram2, c: diagram3}},
+  state = defaultState,
   action
 ) {
   switch (action.type) {
@@ -17,6 +32,8 @@ export function reducer(
       return removeDiagram(state, action);
     case CHANGE_DIAGRAM_NAME:
       return changeDiagramName(state, action);
+    case EDIT_SIDEBAR_ITEM:
+      return editItemName(state, action);
   }
 
   return state;
@@ -26,7 +43,10 @@ function addDiagram({list, diagrams, ...rest}, {name, diagram}) {
   return {
     list: list.concat(name),
     diagrams: {
-      [name]: diagram,
+      [name]: {
+        edit: false,
+        diagram: diagram
+      },
       ...diagrams
     },
     ...rest
@@ -51,14 +71,16 @@ function removeDiagram({list, diagrams, ...rest}, {name}) {
   };
 }
 
-function changeDiagramName({list, diagrams, ...rest}, {previousName, newName}) {
+function changeDiagramName({list, diagrams, ...rest}, action) {
+  const {previousName, newName} = action;
+
   const newDiagrams = Object
     .keys(diagrams)
     .reduce((newDiagrams, key) => {
-      if (key !== name) {
+      if (key !== previousName) {
         newDiagrams[key] = diagrams[key];
       } else {
-        newDiagrams[newName] = diagrams[previousName];
+        newDiagrams[newName] = itemReducer(diagrams[previousName], action);
       }
 
       return newDiagrams;
@@ -68,5 +90,25 @@ function changeDiagramName({list, diagrams, ...rest}, {previousName, newName}) {
     list: list.map(name => name === previousName ? newName : name),
     diagrams: newDiagrams,
     ...rest
+  };
+}
+
+function editItemName({diagrams, ...rest}, action) {
+  const {name} = action;
+  const newDiagrams = Object
+    .keys(diagrams)
+    .reduce((newDiagrams, key) => {
+      if (key === name)  {
+        newDiagrams[name] = itemReducer(diagrams[name], action);
+      } else {
+        newDiagrams[key] = diagrams[key];
+      }
+
+      return newDiagrams;
+    }, {});
+
+  return {
+    ...rest,
+    diagrams: newDiagrams
   };
 }
