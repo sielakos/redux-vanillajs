@@ -1,0 +1,34 @@
+{
+  "name": "redux-vanillajs",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "rm -rf dist/ && ./node_modules/.bin/webpack --config webpack.config.js",
+    "serve": "./node_modules/.bin/webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sielakos/redux-vanillajs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sielakos/redux-vanillajs/issues"
+  },
+  "homepage": "https://github.com/sielakos/redux-vanillajs#readme",
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-preset-latest": "^6.16.0",
+    "file-loader": "^0.9.0",
+    "html-loader": "^0.4.4",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-server": "^2.1.0-beta.11"
+  },
+  "dependencies": {
+    "redux": "^3.6.0"
+  }
+}
