@@ -18,9 +18,18 @@ function createComponent(node) {
         if (err) {
           node.innerHTML = `Could not load diagram ${name}, got error ${err}`;
         }
+
+        resetZoom(viewer);
       });
     }
   };
+}
+
+function resetZoom(viewer) {
+  const canvas = viewer.get('canvas');
+
+  canvas.resized();
+  canvas.zoom('fit-viewport', 'auto');
 }
 
 export const component = connect(

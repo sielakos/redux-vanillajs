@@ -16,7 +16,7 @@ export function list(component, {tag = 'div', key}) {
         )
       );
 
-      render(node, withNodes);
+      lastChildren = render(node, withNodes);
     };
   };
 }
@@ -65,4 +65,11 @@ function render(parentNode, withNodes) {
     parentNode.appendChild(node);
     update(value);
   });
+
+  return withNodes.reduce((children, {key, ...rest}) => {
+    return {
+      ...children,
+      [key]: rest
+    };
+  }, {});
 };
