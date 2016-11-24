@@ -1,7 +1,9 @@
 import {connect, list, mountComponents, get, pipe} from 'utils';
 import {component as itemComponent} from './item';
+import {component as clearAllComponent} from './clearAll';
 
 const template = `
+  <div class="clear-all"></div>
   <ul class="list">
   </ul>
 `;
@@ -19,6 +21,10 @@ function createComponent(node) {
           key: 'name'
         })
       )
+    },
+    {
+      target: '.clear-all',
+      component: clearAllComponent
     }
   ]);
 

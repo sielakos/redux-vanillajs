@@ -7,3 +7,5 @@ export * from './list';
 export * from './classFunctions';
 export * from './noop';
 export * from './dispatchAction';
+export * from './updateOnlyWhenStateChanges';
+export * from './conditional';

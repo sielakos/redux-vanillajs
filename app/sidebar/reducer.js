@@ -2,6 +2,7 @@ import diagram1 from './bpmn/diagram_1';
 import diagram2 from './bpmn/diagram_2';
 import diagram3 from './bpmn/diagram_3';
 import {reducer as itemReducer, CHANGE_DIAGRAM_NAME, EDIT_SIDEBAR_ITEM} from './item';
+import {CLEAR_ALL} from './clearAll';
 
 export const ADD_DIAGRAM = 'ADD_DIAGRAM';
 export const REMOVE_DIAGRAM = 'REMOVE_DIAGRAM';
@@ -34,6 +35,8 @@ export function reducer(
       return changeDiagramName(state, action);
     case EDIT_SIDEBAR_ITEM:
       return editItemName(state, action);
+    case CLEAR_ALL:
+      return clearAll(state);
   }
 
   return state;
@@ -110,5 +113,13 @@ function editItemName({diagrams, ...rest}, action) {
   return {
     ...rest,
     diagrams: newDiagrams
+  };
+}
+
+function clearAll({diagrams, list, ...rest}) {
+  return {
+    diagrams: {},
+    list: [],
+    ...rest
   };
 }

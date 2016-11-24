@@ -6,7 +6,7 @@ module.exports = {
   target: 'web',
   entry: {
     app: './app/index.js',
-    vendor: ['redux', 'bpmn-js'],
+    vendor: ['redux', 'bpmn-js', 'lodash.isequal'],
   },
   output: {
     filename: '[name].js',
