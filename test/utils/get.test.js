@@ -1,4 +1,4 @@
-import {get} from 'utils';
+import {get} from 'utils/get';
 import {expect} from 'chai';
 
 describe('get', () => {

@@ -5,7 +5,7 @@ module.exports = {
   devtool: 'source-map',
   target: 'web',
   entry: {
-    app: './app/index.js',
+    app: path.resolve(__dirname, 'app', 'app.js'),
     vendor: ['redux', 'bpmn-js', 'lodash.isequal'],
   },
   output: {
@@ -13,13 +13,13 @@ module.exports = {
     path: path.join(__dirname, 'dist')
   },
   resolve: {
+    root: path.resolve(__dirname, 'app'),
     modules: [
-      'node_modules',
-      path.resolve(__dirname, 'app')
+      'node_modules'
     ]
   },
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.json$/,
         loader: 'json-loader'
@@ -33,29 +33,13 @@ module.exports = {
         loader: 'url-loader'
       },
       {
-        test: /\.html$/,
-        include: [
-          path.resolve(__dirname, 'app')
-        ],
-        loader: 'html-loader'
-      },
-      {
         test: /\.js$/,
         include: [
-          path.resolve(__dirname, 'app')
+          path.resolve(__dirname, 'app'),
         ],
         loader: 'babel-loader',
-        options: {
-          presets: [
-            [
-              'latest',
-              {
-                es2015: {
-                  modules: false
-                }
-              }
-            ]
-          ],
+        query: {
+          presets: ['latest'],
           plugins: ['transform-object-rest-spread']
         }
       }
@@ -69,6 +53,7 @@ module.exports = {
   devServer: {
     publicPath: '/dist/',
     contentBase: './',
-    port: 9000
+    port: 9000,
+    inline: true
   }
 };

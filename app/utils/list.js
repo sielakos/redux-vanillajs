@@ -1,4 +1,5 @@
 import {pipe} from './pipe';
+import {$document} from 'globals';
 
 export function list(component, {tag = 'div', key}) {
   return (node) => {
@@ -47,7 +48,7 @@ function addNodeAndUpdate(children, getNewNode, {key, value}) {
 }
 
 function getNewNode(parentNode, tag, component) {
-  const node = document.createElement(tag);
+  const node = $document.createElement(tag);
   const update = component(node);
 
   parentNode.appendChild(node);
