@@ -1,9 +1,9 @@
 var config = require('./webpack.config');
 var path = require('path');
-var RewirePlugin = require('rewire-webpack');
 
 delete config.entry;
 delete config.output;
+delete config.plugins;
 
 config.resolve = {
   root: [
@@ -12,17 +12,12 @@ config.resolve = {
   ]
 };
 
-config.plugins = [
-  new RewirePlugin()
-];
-
 //Adds babel rewire plugin
 config.module.loaders
   .filter(({loader}) => loader === 'babel-loader')
   .forEach(loader => {
     loader.query.plugins.push('babel-plugin-rewire');
   });
-
 
 config.module.loaders.push({
   test: /\.js$/,
