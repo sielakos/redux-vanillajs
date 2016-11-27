@@ -1,5 +1,5 @@
 import {pipe} from './pipe';
-import {$document} from 'globals';
+import {$document} from 'dom';
 
 export function list(component, {tag = 'div', key}) {
   return (node) => {

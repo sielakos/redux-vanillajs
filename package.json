@@ -39,8 +39,8 @@
     "sinon": "^2.0.0-pre.4",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.16.2"
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-server": "^2.1.0-beta.11"
   },
   "dependencies": {
     "bpmn-js": "^0.18.2",

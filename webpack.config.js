@@ -13,13 +13,13 @@ module.exports = {
     path: path.join(__dirname, 'dist')
   },
   resolve: {
-    root: path.resolve(__dirname, 'app'),
     modules: [
-      'node_modules'
+      'node_modules',
+      path.resolve(__dirname, 'app')
     ]
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.json$/,
         loader: 'json-loader'
