@@ -1,9 +1,12 @@
 import {connect, list, mountComponents, get, pipe} from 'utils';
 import {component as itemComponent} from './item';
 import {component as clearAllComponent} from './clearAll';
+import {component as randomGeneratorComponent} from './randomGenerator';
+import {createAddDiagramAction} from './reducer';
 
 const template = `
   <div class="clear-all"></div>
+  <div class="add-random"></div>
   <ul class="list">
   </ul>
 `;
@@ -25,6 +28,12 @@ function createComponent(node) {
     {
       target: '.clear-all',
       component: clearAllComponent
+    },
+    {
+      target: '.add-random',
+      component: randomGeneratorComponent(({name, diagram}) =>
+        createAddDiagramAction(name, diagram)
+      )
     }
   ]);
 

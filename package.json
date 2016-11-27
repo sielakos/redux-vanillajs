@@ -35,6 +35,7 @@
     "karma-webpack": "^1.8.0",
     "mocha": "^3.2.0",
     "node-sass": "^3.13.0",
+    "raw-loader": "^0.5.1",
     "sass-loader": "^4.0.2",
     "sinon": "^2.0.0-pre.4",
     "style-loader": "^0.13.1",

@@ -6,6 +6,7 @@ module.exports = {
   target: 'web',
   entry: {
     app: path.resolve(__dirname, 'app', 'app.js'),
+    bpmnFiles: [path.resolve(__dirname, 'app', 'bpmn')],
     vendor: ['redux', 'bpmn-js', 'lodash.isequal'],
   },
   output: {
@@ -21,12 +22,26 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.bpmn$/,
+        loader: 'raw-loader'
+      },
+      {
         test: /\.json$/,
         loader: 'json-loader'
       },
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader!sass-loader'
+        use: [
+          'style-loader/url',
+          {
+            'loader': 'file-loader',
+            options: {
+              publicPath: '/dist/',
+              name: '[name].css'
+            }
+          },
+          'sass-loader'
+        ]
       },
       {
         test: /\.(jpg|png)$/,
@@ -47,7 +62,7 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'] // Specify the common bundle's name.
+      names: ['vendor', 'bpmnFiles', 'manifest']
     })
   ],
   devServer: {

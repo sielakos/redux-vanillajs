@@ -1,6 +1,6 @@
-import diagram1 from './bpmn/diagram_1';
-import diagram2 from './bpmn/diagram_2';
-import diagram3 from './bpmn/diagram_3';
+import diagram1 from 'bpmn/diagram_1.bpmn';
+import diagram2 from 'bpmn/diagram_2.bpmn';
+import diagram6 from 'bpmn/diagram_6.bpmn';
 import {reducer as itemReducer, CHANGE_DIAGRAM_NAME, EDIT_SIDEBAR_ITEM} from './item';
 import {CLEAR_ALL} from './clearAll';
 
@@ -17,7 +17,7 @@ const defaultState = {
       diagram: diagram2
     },
     c: {
-      diagram: diagram3
+      diagram: diagram6
     }
   }
 };
@@ -121,5 +121,13 @@ function clearAll({diagrams, list, ...rest}) {
     diagrams: {},
     list: [],
     ...rest
+  };
+}
+
+export function createAddDiagramAction(name, diagram) {
+  return {
+    type: ADD_DIAGRAM,
+    name,
+    diagram
   };
 }
