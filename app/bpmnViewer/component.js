@@ -1,4 +1,4 @@
-import Viewer from 'bpmn-js';
+import Viewer from 'bpmn-js/lib/NavigatedViewer';
 import {connect} from 'utils';
 import {getDiagram} from 'sidebar';
 

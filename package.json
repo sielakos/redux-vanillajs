@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "rm -rf dist/ && ./node_modules/.bin/webpack --config webpack.config.js",
+    "compile": "rm -rf dist/ && ./node_modules/.bin/webpack --config webpack.config-production.js",
     "serve": "./node_modules/.bin/webpack-dev-server",
     "test": "./node_modules/.bin/karma start"
   },
