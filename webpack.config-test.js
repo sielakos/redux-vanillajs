@@ -22,8 +22,10 @@ function addTestRoot() {
 
 function addBabelRewirePlugin() {
   config.module.rules
-    .filter(({loader}) => loader === 'babel-loader')
-    .forEach(loader => {
+    .filter(function(loaderConf){
+      return loaderConf.loader === 'babel-loader';
+    })
+    .forEach(function(loader) {
       loader.query.plugins.push('babel-plugin-rewire');
     });
 }

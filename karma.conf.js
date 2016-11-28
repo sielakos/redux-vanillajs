@@ -70,5 +70,5 @@ module.exports = function(config) {
       // i. e.
       stats: 'errors-only'
     }
-  })
+  });
 };
