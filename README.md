@@ -3,6 +3,8 @@
 Playground repository for experimenting with component based architecture without any viewer library.
 Furthermore this view layer is integrated with redux for state managament.
 
+[![Build Status](https://travis-ci.org/sielakos/redux-vanillajs.svg?branch=master)](https://travis-ci.org/sielakos/redux-vanillajs)
+
 ## Component architecture with plain javascript
 
 Basically component is just a function that takes DOM node and returns update function that should be called 
