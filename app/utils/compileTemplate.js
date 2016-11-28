@@ -7,10 +7,11 @@ export function compileTemplate(templateParts, ...components) {
   return (node) => {
     node.innerHTML = html;
 
-    return mountComponents(node, createMountPoints(placeholders));
+    return mountComponents(node, createMountPoints(node, placeholders));
   }
 }
 
+// Placeholder element will be removed if parent element has only one child
 function createPlaceholders(components) {
   return components
     .map(component => ({
@@ -27,9 +28,24 @@ function createHtml(templateParts, placeholders) {
     }, templateParts[0]);
 }
 
-function createMountPoints(placeholders) {
+function createMountPoints(node, placeholders) {
   return placeholders.map(({name, component}) => ({
-    target: `#${name}`,
+    target: getTarget(node, name),
     component
   }));
+}
+
+// If possible remove placeholder and return parent as target
+function getTarget(node, name) {
+  const target = node.querySelector(`#${name}`);
+  const parent = target.parentElement;
+  const count = parent.childElementCount;
+
+  if (count === 1) {
+    parent.innerHTML = '';
+
+    return parent;
+  }
+
+  return target;
 }
