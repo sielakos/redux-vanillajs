@@ -9,3 +9,4 @@ export {noop} from './noop';
 export {dispatchAction} from './dispatchAction';
 export {updateOnlyWhenStateChanges} from './updateOnlyWhenStateChanges';
 export {conditional} from './conditional';
+export {compileTemplate} from './compileTemplate';
