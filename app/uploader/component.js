@@ -1,6 +1,6 @@
-import {noop} from 'utils';
-import {ACTION_EVENT_NAME} from 'actionEventName';
+import {noop, dispatchAction} from 'utils';
 import {ADD_DIAGRAM} from 'sidebar';
+import {$FileReader} from 'dom';
 
 const template = `
   <form class="upload-form">
@@ -17,21 +17,20 @@ export function component(node) {
   const fileElement = node.querySelector('.upload-form-file');
 
   node.addEventListener('submit', (event) => {
+    console.log(fileElement);
+
     const name = nameElement.value;
     const file = fileElement.files[0];
-    const reader = new FileReader();
+    const reader = new $FileReader();
 
     event.preventDefault();
 
     reader.onload = () => {
-      const event = new Event(ACTION_EVENT_NAME);
-      event.reduxAction = {
+      dispatchAction({
         type: ADD_DIAGRAM,
         name,
         diagram: reader.result
-      };
-
-      document.dispatchEvent(event);
+      });
     };
 
     reader.readAsText(file);

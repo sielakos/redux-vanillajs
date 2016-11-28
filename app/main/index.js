@@ -1,2 +1,2 @@
-export * from './reducer';
-export * from './component';
+export {reducer} from './reducer';
+export {component} from './component';
