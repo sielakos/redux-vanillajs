@@ -3,7 +3,6 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {component, __set__, __ResetDependency__} from 'uploader/component';
 
-
 describe('uploader/component', () => {
   let $FileReader;
   let node;
