@@ -17,8 +17,6 @@ export function component(node) {
   const fileElement = node.querySelector('.upload-form-file');
 
   node.addEventListener('submit', (event) => {
-    console.log(fileElement);
-
     const name = nameElement.value;
     const file = fileElement.files[0];
     const reader = new $FileReader();

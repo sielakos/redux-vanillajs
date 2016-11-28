@@ -36,6 +36,12 @@ describe('uploader/component', () => {
     expect(nameElement).to.have.attr('type', 'text');
   });
 
+  it('should fire submit when add diagram button is clicked', () => {
+    node.querySelector('[type="submit"]').click();
+
+    expect($FileReader.readAsText.calledOnce).to.eql(true);
+  });
+
   describe('on submit', () => {
     const name = 'barbara';
     const ADD_DIAGRAM = 'ADD_DIAGRAM';
