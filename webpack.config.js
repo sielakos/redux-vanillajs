@@ -68,7 +68,6 @@ module.exports = {
   devServer: {
     publicPath: '/dist/',
     contentBase: './',
-    port: 9000,
-    inline: true
+    port: 9000
   }
 };

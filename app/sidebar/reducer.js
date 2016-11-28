@@ -6,9 +6,11 @@ import {CLEAR_ALL} from './clearAll';
 
 export const ADD_DIAGRAM = 'ADD_DIAGRAM';
 export const REMOVE_DIAGRAM = 'REMOVE_DIAGRAM';
+export const SEARCH_DIAGRAMS = 'SEARCH_DIAGRAMS';
 
 const defaultState = {
   list: ['a', 'b', 'c'],
+  displayList: ['a', 'b', 'c'],
   diagrams: {
     a: {
       diagram: diagram1
@@ -37,13 +39,15 @@ export function reducer(
       return editItemName(state, action);
     case CLEAR_ALL:
       return clearAll(state);
+    case SEARCH_DIAGRAMS:
+      return searchDiagrams(state, action);
   }
 
   return state;
 }
 
 function addDiagram({list, diagrams, ...rest}, {name, diagram}) {
-  return {
+  return updateDisplayList({
     list: list.concat(name),
     diagrams: {
       [name]: {
@@ -53,7 +57,7 @@ function addDiagram({list, diagrams, ...rest}, {name, diagram}) {
       ...diagrams
     },
     ...rest
-  };
+  });
 }
 
 function removeDiagram({list, diagrams, ...rest}, {name}) {
@@ -67,11 +71,11 @@ function removeDiagram({list, diagrams, ...rest}, {name}) {
       return newDiagrams;
     }, {});
 
-  return {
+  return updateDisplayList({
     list: list.filter(other => other !== name),
     diagrams: newDiagrams,
     ...rest
-  };
+  });
 }
 
 function changeDiagramName({list, diagrams, ...rest}, action) {
@@ -89,11 +93,11 @@ function changeDiagramName({list, diagrams, ...rest}, action) {
       return newDiagrams;
     }, {});
 
-  return {
+  return updateDisplayList({
     list: list.map(name => name === previousName ? newName : name),
     diagrams: newDiagrams,
     ...rest
-  };
+  });
 }
 
 function editItemName({diagrams, ...rest}, action) {
@@ -120,8 +124,35 @@ function clearAll({diagrams, list, ...rest}) {
   return {
     diagrams: {},
     list: [],
+    displayList: [],
     ...rest
   };
+}
+
+function searchDiagrams({list, ...rest}, {search}) {
+  return {
+    ...rest,
+    search,
+    list,
+    displayList: getDisplayList(list, search)
+  };
+}
+
+function updateDisplayList({list, search, ...rest}) {
+  return {
+    ...rest,
+    list,
+    search,
+    displayList: getDisplayList(list, search)
+  }
+}
+
+function getDisplayList(list, search) {
+  if (!search) {
+    return list;
+  }
+
+  return list.filter((name) => name.indexOf(search) >= 0);
 }
 
 export function createAddDiagramAction(name, diagram) {
@@ -129,5 +160,12 @@ export function createAddDiagramAction(name, diagram) {
     type: ADD_DIAGRAM,
     name,
     diagram
+  };
+}
+
+export function createSearchAction(search) {
+  return {
+    type: SEARCH_DIAGRAMS,
+    search
   };
 }

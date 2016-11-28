@@ -2,7 +2,8 @@ import {connect, list, compileTemplate, get, pipe} from 'utils';
 import {component as itemComponent} from './item';
 import {component as clearAllComponent} from './clearAll';
 import {component as randomGeneratorComponent} from './randomGenerator';
-import {createAddDiagramAction} from './reducer';
+import {createAddDiagramAction, createSearchAction} from './reducer';
+import {component as searchComponent} from './search';
 
 const addRandom = randomGeneratorComponent(({name, diagram}) =>
   createAddDiagramAction(name, diagram)
@@ -19,12 +20,14 @@ const diagramList = connect(
 const createComponent = compileTemplate`
   <div class="clear-all">${clearAllComponent}</div>
   <div class="add-random">${addRandom}</div>
+  <div class="search">${searchComponent(createSearchAction)}</div>
   <ul class="list">${diagramList}</ul>
 `;
 
-function getProperties({list, diagrams}) {
+function getProperties({displayList, diagrams, ...rest}) {
   return {
-    list: list.map(name => ({
+    ...rest,
+    list: displayList.map(name => ({
       ...diagrams[name],
       name
     }))
