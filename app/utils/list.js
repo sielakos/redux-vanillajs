@@ -1,23 +1,25 @@
-import {pipe} from './pipe';
+import {includes} from './includes';
 import {$document} from 'dom';
 
-export function list(component, {tag = 'div', key}) {
-  return (node) => {
-    let lastChildren = {};
+export function list(component, {key}) {
+  return (templateNode) => {
+    let nodes = [];
+    let parent = templateNode.parentNode;
+    const startMarker = $document.createComment('LIST START');
+
+    parent.insertBefore(startMarker, templateNode);
 
     return (values) => {
-      const withNodes = values.map(
-        pipe(
-          wrapWithKey.bind(null, key),
-          addNodeAndUpdate.bind(
-            null,
-            lastChildren,
-            getNewNode.bind(null, node, tag, component)
-          )
-        )
+      const valuesWithKey = values.map(
+        wrapWithKey.bind(null, key)
       );
 
-      lastChildren = render(node, withNodes);
+      nodes = render(
+        startMarker,
+        nodes,
+        valuesWithKey,
+        getNewNode.bind(null, templateNode, component)
+      );
     };
   };
 }
@@ -36,22 +38,9 @@ function wrapWithKey(keyProperty, value, index) {
   };
 }
 
-function addNodeAndUpdate(children, getNewNode, {key, value}) {
-  const {node, update} = children[key] || getNewNode();
-
-  return {
-    key,
-    value,
-    node,
-    update
-  };
-}
-
-function getNewNode(parentNode, tag, component) {
-  const node = $document.createElement(tag);
+function getNewNode(templateNode, component) {
+  const node = templateNode.cloneNode(true);
   const update = component(node);
-
-  parentNode.appendChild(node);
 
   return {
     node,
@@ -59,18 +48,69 @@ function getNewNode(parentNode, tag, component) {
   }
 }
 
-function render(parentNode, withNodes) {
-  parentNode.innerHTML = '';
+function render(startMarker, nodes, valuesWithKey, getNewNode) {
+  removeNodes(nodes);
 
-  withNodes.forEach(({node, value, update}) => {
-    parentNode.appendChild(node);
+  return insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode);
+}
+
+function removeNodes(nodes) {
+  nodes.forEach(({node}) => node.parentNode.removeChild(node));
+}
+
+function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
+  const {updated, notUsed} = splitNodes(nodes, valuesWithKey);
+  const startValue = {
+    nodes: [],
+    previous: startMarker
+  };
+
+  const {nodes: newNodes} = valuesWithKey.reduce(({nodes, previous}, {key, value}) => {
+    const {node, update} = getNextNode(key);
+
+    insertAfter(node, previous);
+
     update(value);
-  });
 
-  return withNodes.reduce((children, {key, ...rest}) => {
+    nodes.push({
+      node,
+      update,
+      key
+    });
+
     return {
-      ...children,
-      [key]: rest
+      nodes,
+      previous: node
     };
-  }, {});
-};
+  }, startValue);
+
+  return newNodes;
+
+  function getNextNode(key) {
+    return updated[key] || notUsed.shift() || getNewNode();
+  }
+}
+
+function splitNodes(nodes, valuesWithKey) {
+  const startValue = {
+    updated: {},
+    notUsed: []
+  };
+  const valuesKeys = valuesWithKey.map(({key}) => key);
+
+  return nodes
+    .reduce(({updated, notUsed}, nodeEntry) => {
+      if (nodeEntry.key && includes(valuesKeys, nodeEntry.key)) {
+        updated[nodeEntry.key] = nodeEntry;
+      } else {
+        notUsed.push(nodeEntry);
+      }
+
+      return {updated, notUsed};
+    }, startValue);
+}
+
+function insertAfter(node, target) {
+  target.parentNode.insertBefore(node, target.nextSibling);
+}
+

@@ -15,7 +15,6 @@ export function component(node) {
   let lastEdit;
 
   node.innerHTML = template;
-  addClass(node, 'sidebar-item');
 
   const nameElement = node.querySelector('.sidebar-item-name');
   const removeElement = node.querySelector('.sidebar-item-remove');

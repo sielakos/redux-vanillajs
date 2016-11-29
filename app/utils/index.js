@@ -11,3 +11,4 @@ export {updateOnlyWhenStateChanges} from './updateOnlyWhenStateChanges';
 export {conditional} from './conditional';
 export {compileTemplate} from './compileTemplate';
 export {setInputValue} from './setInputValue';
+export {includes} from './includes';

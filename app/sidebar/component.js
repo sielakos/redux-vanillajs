@@ -12,7 +12,6 @@ const addRandom = randomGeneratorComponent(({name, diagram}) =>
 const diagramList = connect(
   'list',
   list(itemComponent, {
-    tag: 'li',
     key: 'name'
   })
 );
@@ -21,7 +20,9 @@ const createComponent = compileTemplate`
   <div class="clear-all">${clearAllComponent}</div>
   <div class="add-random">${addRandom}</div>
   <div class="search">${searchComponent(createSearchAction)}</div>
-  <ul class="list">${diagramList}</ul>
+  <ul class="list">
+    <li class="sidebar-item">${diagramList}</li>
+  </ul>
 `;
 
 function getProperties({displayList, diagrams, ...rest}) {
