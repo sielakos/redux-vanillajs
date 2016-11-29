@@ -1,7 +1,8 @@
 import {includes} from './includes';
+import {addChildren} from './jsx';
 import {$document} from 'dom';
 
-export function list(component, {key}) {
+export function List({key, children}) {
   return (templateNode) => {
     let nodes = [];
     let parent = templateNode.parentNode;
@@ -21,11 +22,12 @@ export function list(component, {key}) {
         startMarker,
         nodes,
         valuesWithKey,
-        getNewNode.bind(null, templateNode, component)
+        getNewNode.bind(null, templateNode, children)
       );
     };
   };
 }
+List.composable = true;
 
 function assertKeysAreUnique(valuesWithKey) {
   const keys = valuesWithKey.map(({key}) => key);
@@ -51,9 +53,9 @@ function wrapWithKey(keyProperty, value, index) {
   };
 }
 
-function getNewNode(templateNode, component) {
+function getNewNode(templateNode, children) {
   const node = templateNode.cloneNode(true);
-  const update = component(node);
+  const update = addChildren(node, children);
 
   return {
     node,
@@ -126,4 +128,3 @@ function splitNodes(nodes, valuesWithKey) {
 function insertAfter(node, target) {
   target.parentNode.insertBefore(node, target.nextSibling);
 }
-

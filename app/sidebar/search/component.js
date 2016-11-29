@@ -4,7 +4,7 @@ const template = compileTemplate`
   search: <input ${inputField('search')} type="text">
 `;
 
-export function component(createSearchAction) {
+export function component({createSearchAction}) {
   return (node) => {
     const update = template(node);
 
@@ -19,3 +19,5 @@ export function component(createSearchAction) {
     return update;
   };
 }
+
+component.composable = true;

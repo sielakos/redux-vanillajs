@@ -1,28 +1,27 @@
-import {connect, list, jsx, get, pipe} from 'utils';
-import {component as itemComponent} from './item';
-import {component as clearAllComponent} from './clearAll';
-import {component as randomGeneratorComponent} from './randomGenerator';
+import {List, jsx, get, pipe, JsxConnect} from 'utils';
+import {component as ItemComponent} from './item';
+import {component as ClearAllComponent} from './clearAll';
+import {component as RandomGeneratorComponent} from './randomGenerator';
 import {createAddDiagramAction, createSearchAction} from './reducer';
-import {component as searchComponent} from './search';
+import {component as SearchComponent} from './search';
 
-const addRandom = randomGeneratorComponent(({name, diagram}) =>
-  createAddDiagramAction(name, diagram)
-);
-
-const diagramList = connect(
-  'list',
-  list(itemComponent, {
-    key: 'name'
-  })
-);
-
-const createComponent = (<div>
+const SidebarComponent = (<div>
   Some text: <br />
-  <div className="clear-all">{clearAllComponent}</div>
-  <div className="add-random">{addRandom}</div>
-  <div className="search">{searchComponent(createSearchAction)}</div>
+  <div className="clear-all">
+    <ClearAllComponent />
+  </div>
+  <div className="add-random">
+    <RandomGeneratorComponent createAddDiagramAction={({name, diagram}) => createAddDiagramAction(name, diagram)}  />
+  </div>
+  <div className="search"><SearchComponent createSearchAction={createSearchAction} /></div>
   <ul className="list">
-    <li className="sidebar-item">{diagramList}</li>
+    <li className="sidebar-item">
+      <JsxConnect selector="list">
+        <List key="name">
+          <ItemComponent />
+        </List>
+      </JsxConnect>
+    </li>
   </ul>
 </div>);
 
@@ -37,9 +36,7 @@ function getProperties({displayList, diagrams, ...rest}) {
   };
 }
 
-export const component = connect(
-  getProperties,
-  createComponent,
-);
-
+export const component = (<JsxConnect selector={getProperties}>
+  <SidebarComponent/>
+</JsxConnect>);
 

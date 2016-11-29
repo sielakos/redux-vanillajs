@@ -1,9 +1,9 @@
 export {mountComponents} from './mountComponents';
 export {runUpdateFunctions} from './runUpdateFunctions';
 export {pipe} from './pipe';
-export {connect} from './connect';
+export {connect, JsxConnect} from './connect';
 export {get} from './get';
-export {list} from './list';
+export {List} from './list';
 export {hasClass, addClass, removeClass} from './classFunctions';
 export {noop} from './noop';
 export {dispatchAction} from './dispatchAction';
@@ -14,4 +14,4 @@ export {setInputValue} from './setInputValue';
 export {includes} from './includes';
 export {attribute} from './attribute';
 export {inputField} from './inputField';
-export {jsx} from './jsx';
+export {jsx, addChild, addChildren} from './jsx';

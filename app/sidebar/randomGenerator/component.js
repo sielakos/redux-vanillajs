@@ -5,7 +5,7 @@ const template = `
   <button class="random-btn">Add random diagram</button>
 `;
 
-export function component(createAddDiagramAction) {
+export function component({createAddDiagramAction}) {
   return (node) => {
     node.innerHTML = template;
 
@@ -20,6 +20,7 @@ export function component(createAddDiagramAction) {
     return noop;
   };
 }
+component.composable = true;
 
 function getRandomDiagram() {
   const max = allDiagrams.length - 1;

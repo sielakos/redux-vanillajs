@@ -33,9 +33,7 @@ function handleHtml(element, attributes, children) {
       return noop;
     }
 
-    const updateFunctions = children.map(addChild.bind(null, elementNode));
-
-    return runUpdateFunctions.bind(null, updateFunctions);
+    return addChildren(elementNode, children);
   };
 }
 
@@ -65,7 +63,13 @@ function setAttribute(elementNode, attribute, value) {
   elementNode.setAttribute(attribute, value);
 }
 
-function addChild(elementNode, child) {
+export function addChildren(elementNode, children) {
+  const updateFunctions = children.map(addChild.bind(null, elementNode));
+
+  return runUpdateFunctions.bind(null, updateFunctions);
+}
+
+export function addChild(elementNode, child) {
   if (typeof child === 'string') {
     elementNode.appendChild(
       document.createTextNode(child)
