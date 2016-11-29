@@ -1,6 +1,7 @@
 import {noop, dispatchAction} from 'utils';
 import {ADD_DIAGRAM} from 'sidebar';
 import {$FileReader} from 'dom';
+import {saveDiagram} from 'mockServer';
 
 const template = `
   <form class="upload-form">
@@ -24,10 +25,15 @@ export function component(node) {
     event.preventDefault();
 
     reader.onload = () => {
-      dispatchAction({
-        type: ADD_DIAGRAM,
-        name,
-        diagram: reader.result
+      const diagram = reader.result;
+
+      dispatchAction(() => {
+        saveDiagram(diagram)
+          .then(() => dispatchAction({
+            type: ADD_DIAGRAM,
+            name,
+            diagram
+          }));
       });
     };
 
