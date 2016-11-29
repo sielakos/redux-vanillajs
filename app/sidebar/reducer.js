@@ -120,12 +120,12 @@ function editItemName({diagrams, ...rest}, action) {
   };
 }
 
-function clearAll({diagrams, list, ...rest}) {
+function clearAll(state) {
   return {
+    ...state,
     diagrams: {},
     list: [],
-    displayList: [],
-    ...rest
+    displayList: []
   };
 }
 

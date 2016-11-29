@@ -8,11 +8,14 @@ export function list(component, {key}) {
     const startMarker = $document.createComment('LIST START');
 
     parent.insertBefore(startMarker, templateNode);
+    parent.removeChild(templateNode);
 
     return (values) => {
       const valuesWithKey = values.map(
         wrapWithKey.bind(null, key)
       );
+
+      assertKeysAreUnique(valuesWithKey);
 
       nodes = render(
         startMarker,
@@ -22,6 +25,16 @@ export function list(component, {key}) {
       );
     };
   };
+}
+
+function assertKeysAreUnique(valuesWithKey) {
+  const keys = valuesWithKey.map(({key}) => key);
+
+  for (let key; keys.length > 0; key = keys.shift()) {
+    if (includes(keys, key)) {
+      throw new Error(`key ${key} is not unique`);
+    }
+  }
 }
 
 function wrapWithKey(keyProperty, value, index) {
