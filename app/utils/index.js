@@ -14,3 +14,4 @@ export {setInputValue} from './setInputValue';
 export {includes} from './includes';
 export {attribute} from './attribute';
 export {inputField} from './inputField';
+export {jsx} from './jsx';

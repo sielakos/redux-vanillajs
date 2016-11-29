@@ -1,4 +1,4 @@
-import {connect, list, compileTemplate, get, pipe} from 'utils';
+import {connect, list, jsx, get, pipe} from 'utils';
 import {component as itemComponent} from './item';
 import {component as clearAllComponent} from './clearAll';
 import {component as randomGeneratorComponent} from './randomGenerator';
@@ -16,14 +16,16 @@ const diagramList = connect(
   })
 );
 
-const createComponent = compileTemplate`
-  <div class="clear-all">${clearAllComponent}</div>
-  <div class="add-random">${addRandom}</div>
-  <div class="search">${searchComponent(createSearchAction)}</div>
-  <ul class="list">
-    <li class="sidebar-item">${diagramList}</li>
+const createComponent = (<div>
+  Some text: <br />
+  <div className="clear-all">{clearAllComponent}</div>
+  <div className="add-random">{addRandom}</div>
+  <div className="search">{searchComponent(createSearchAction)}</div>
+  <ul className="list">
+    <li className="sidebar-item">{diagramList}</li>
   </ul>
-`;
+</div>);
+
 
 function getProperties({displayList, diagrams, ...rest}) {
   return {

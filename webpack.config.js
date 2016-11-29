@@ -55,7 +55,12 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           presets: ['latest'],
-          plugins: ['transform-object-rest-spread']
+          plugins: [
+            'transform-object-rest-spread',
+            ['transform-react-jsx', {
+              'pragma': 'jsx'
+            }]
+          ]
         }
       }
     ]
