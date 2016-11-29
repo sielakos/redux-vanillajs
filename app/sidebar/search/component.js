@@ -1,12 +1,12 @@
-import {dispatchAction, setInputValue} from 'utils';
+import {dispatchAction, inputField, compileTemplate} from 'utils';
 
-const template = `
-  search: <input type="text">
+const template = compileTemplate`
+  search: <input ${inputField('search')} type="text">
 `;
 
 export function component(createSearchAction) {
   return (node) => {
-    node.innerHTML = template;
+    const update = template(node);
 
     const searchField = node.querySelector('input');
 
@@ -16,8 +16,6 @@ export function component(createSearchAction) {
       );
     });
 
-    return (state) => {
-      setInputValue(searchField, state.search || '');
-    }
+    return update;
   };
 }
