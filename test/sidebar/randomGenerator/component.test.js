@@ -16,7 +16,7 @@ describe('sidebar/randomGenerator/component', () => {
     __set__('dispatchAction', dispatchAction);
 
     node = setUpDomTesting();
-    component((x) => x)(node);
+    component({createAddDiagramAction: (x) => x})(node);
   });
 
   afterEach(() => {
