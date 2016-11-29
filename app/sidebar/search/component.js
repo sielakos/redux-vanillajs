@@ -1,8 +1,6 @@
-import {dispatchAction, inputField, compileTemplate} from 'utils';
+import {dispatchAction, inputField, jsx} from 'utils';
 
-const template = compileTemplate`
-  search: <input ${inputField('search')} type="text">
-`;
+const template = <input component={inputField('search')} type="text" />;
 
 export function component({createSearchAction}) {
   return (node) => {
