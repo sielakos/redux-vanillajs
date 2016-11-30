@@ -1,3 +1,5 @@
 export function getDiagram(state, name) {
-  return state.diagrams[name].diagram;
+  if (state.diagrams[name]) {
+    return state.diagrams[name].diagram;
+  }
 }
