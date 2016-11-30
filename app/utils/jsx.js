@@ -1,3 +1,5 @@
+import {createEventsBus} from './events';
+
 export function jsx(element, attributes, ...children) {
   if (typeof element === 'function') {
     return handleComponent(element, attributes, children)
@@ -19,19 +21,19 @@ function handleComponent(component, attributes, children) {
 }
 
 function handleHtml(element, attributes, children) {
-  const elementNode = document.createElement(element);
+  return (node, eventsBus) => {
+    const elementNode = document.createElement(element);
 
-  return (node) => {
     node.appendChild(elementNode);
 
-    return setAttributes(elementNode, attributes)
+    return setAttributes(elementNode, eventsBus, attributes)
       .concat(
-        addChildren(elementNode, children)
+        addChildren(elementNode, eventsBus, children)
       );
   };
 }
 
-function setAttributes(elementNode, attributes) {
+function setAttributes(elementNode, eventsBus, attributes) {
   if (!attributes) {
     return [];
   }
@@ -42,7 +44,7 @@ function setAttributes(elementNode, attributes) {
       const value = attributes[attribute];
 
       if (typeof value === 'function') { // attribute component
-        return updates.concat(value(elementNode));
+        return updates.concat(value(elementNode, createEventsBus(eventsBus)));
       }
 
       setAttribute(elementNode, attribute, value);
@@ -59,13 +61,13 @@ function setAttribute(elementNode, attribute, value) {
   elementNode.setAttribute(attribute, value);
 }
 
-export function addChildren(elementNode, children) {
+export function addChildren(elementNode, eventsBus, children) {
   return children.reduce((updates, child) => {
-    return updates.concat(addChild(elementNode, child));
+    return updates.concat(addChild(elementNode, eventsBus, child));
   }, []);
 }
 
-export function addChild(elementNode, child) {
+export function addChild(elementNode, eventsBus, child) {
   if (typeof child === 'string') {
     elementNode.appendChild(
       document.createTextNode(child)
@@ -74,5 +76,5 @@ export function addChild(elementNode, child) {
     return [];
   }
 
-  return child(elementNode);
+  return child(elementNode, createEventsBus(eventsBus));
 }

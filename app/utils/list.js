@@ -4,7 +4,7 @@ import {runUpdate} from './runUpdate';
 import {$document} from 'dom';
 
 export function List({key, children}) {
-  return (templateNode) => {
+  return (templateNode, eventsBus) => {
     let nodes = [];
     let parent = templateNode.parentNode;
     const startMarker = $document.createComment('LIST START');
@@ -23,7 +23,7 @@ export function List({key, children}) {
         startMarker,
         nodes,
         valuesWithKey,
-        getNewNode.bind(null, templateNode, children)
+        getNewNode.bind(null, templateNode, eventsBus, children)
       );
     };
   };
@@ -54,11 +54,11 @@ function wrapWithKey(keyProperty, value, index) {
   };
 }
 
-function getNewNode(templateNode, children) {
+function getNewNode(templateNode, eventsBus, children) {
   const node = templateNode.cloneNode(true);
   const update = runUpdate.bind(
     null,
-    addChildren(node, children)
+    addChildren(node, eventsBus, children)
   );
 
   return {

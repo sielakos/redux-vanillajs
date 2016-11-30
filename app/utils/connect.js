@@ -8,10 +8,10 @@ export function connect(getProperties, component) {
     return connect(get.bind(null, getProperties), component);
   }
 
-  return node => {
+  return (node, eventsBus) => {
     const updateComponent = runUpdate.bind(
       null,
-      component(node)
+      component(node, eventsBus)
     );
 
     return pipe(getProperties, updateComponent);
@@ -27,8 +27,8 @@ export function JsxConnect({selector, children}) {
     });
   }
 
-  return (node) => {
-    const updateFunctions = addChildren(node, children);
+  return (node, eventsBus) => {
+    const updateFunctions = addChildren(node, eventsBus, children);
 
     return pipe(
       selector,

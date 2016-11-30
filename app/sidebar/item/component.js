@@ -1,20 +1,20 @@
-import {addClass, removeClass, dispatchAction} from 'utils';
+import {addClass, removeClass, dispatchAction, jsx} from 'utils';
 import {REMOVE_DIAGRAM} from '../reducer';
 import {CHANGE_DIAGRAM_NAME, EDIT_SIDEBAR_ITEM} from './reducer';
 import {SELECT_DIAGRAM} from 'bpmnViewer';
 
-const template = `
+const template = <div>
   <a class="sidebar-item-name"></a>
-  <input class="sidebar-item-name-field hidden" type="text">
+  <input class="sidebar-item-name-field hidden" type="text" />
   <button class="sidebar-item-remove" type="button">remove</button>
   <button class="sidebar-item-rename" type="button">rename</button>
-`;
+</div>;
 
-export function component(node) {
+export function component(node, eventsBus) {
   let lastName;
   let lastEdit;
 
-  node.innerHTML = template;
+  template(node, eventsBus);
 
   const nameElement = node.querySelector('.sidebar-item-name');
   const removeElement = node.querySelector('.sidebar-item-remove');

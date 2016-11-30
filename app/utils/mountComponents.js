@@ -1,9 +1,10 @@
 import {pipe} from './pipe';
+import {createEventsBus} from './events';
 
-export function mountComponents(parentNode, mountPoints) {
+export function mountComponents(parentNode, eventsBus, mountPoints) {
   const addComponent = pipe(
     getNodeForTarget.bind(null, parentNode),
-    mountComponent
+    mountComponent.bind(null, eventsBus)
   );
 
   return mountPoints.reduce((updates, mountPoint) => {
@@ -25,6 +26,6 @@ function getNodeForTarget(parentNode, {target, ...rest}) {
   };
 }
 
-function mountComponent({component, node}) {
-  return component(node);
+function mountComponent(eventBus, {component, node}) {
+  return component(node, createEventsBus(eventBus));
 }

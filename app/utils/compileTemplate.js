@@ -4,10 +4,14 @@ export function compileTemplate(templateParts, ...components) {
   const placeholders = createPlaceholders(components);
   const html = createHtml(templateParts, placeholders);
 
-  return (node) => {
+  return (node, eventBus) => {
     node.innerHTML = html;
 
-    return mountComponents(node, createMountPoints(node, placeholders));
+    return mountComponents(
+      node,
+      eventBus,
+      createMountPoints(node, placeholders)
+    );
   }
 }
 

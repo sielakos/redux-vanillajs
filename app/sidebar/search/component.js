@@ -3,8 +3,8 @@ import {dispatchAction, inputField, jsx} from 'utils';
 const template = <input component={inputField('search')} type="text" />;
 
 export function component({createSearchAction}) {
-  return (node) => {
-    const update = template(node);
+  return (node, eventsBus) => {
+    const update = template(node, eventsBus);
 
     const searchField = node.querySelector('input');
 
