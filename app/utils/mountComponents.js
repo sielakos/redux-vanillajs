@@ -1,13 +1,14 @@
-import {runUpdateFunctions} from './runUpdateFunctions';
 import {pipe} from './pipe';
 
 export function mountComponents(parentNode, mountPoints) {
-  const updateFunctions = mountPoints.map(pipe(
+  const addComponent = pipe(
     getNodeForTarget.bind(null, parentNode),
     mountComponent
-  ));
+  );
 
-  return runUpdateFunctions.bind(null, updateFunctions);
+  return mountPoints.reduce((updates, mountPoint) => {
+    return updates.concat(addComponent(mountPoint));
+  }, []);
 }
 
 function getNodeForTarget(parentNode, {target, ...rest}) {

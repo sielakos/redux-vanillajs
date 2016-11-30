@@ -1,6 +1,3 @@
-import {runUpdateFunctions} from './runUpdateFunctions';
-import {noop} from './noop';
-
 export function jsx(element, attributes, ...children) {
   if (typeof element === 'function') {
     return handleComponent(element, attributes, children)
@@ -24,35 +21,34 @@ function handleComponent(component, attributes, children) {
 function handleHtml(element, attributes, children) {
   const elementNode = document.createElement(element);
 
-  setAttributes(elementNode, attributes);
-
   return (node) => {
     node.appendChild(elementNode);
 
-    if (children.length === 0) {
-      return noop;
-    }
-
-    return addChildren(elementNode, children);
+    return setAttributes(elementNode, attributes)
+      .concat(
+        addChildren(elementNode, children)
+      );
   };
 }
 
 function setAttributes(elementNode, attributes) {
   if (!attributes) {
-    return;
+    return [];
   }
 
-  Object
+  return Object
     .keys(attributes)
-    .forEach(attribute => {
+    .reduce((updates, attribute) => {
       const value = attributes[attribute];
 
       if (typeof value === 'function') { // attribute component
-        return value(elementNode);
+        return updates.concat(value(elementNode));
       }
 
       setAttribute(elementNode, attribute, value);
-    });
+
+      return updates;
+    }, []);
 }
 
 function setAttribute(elementNode, attribute, value) {
@@ -64,9 +60,9 @@ function setAttribute(elementNode, attribute, value) {
 }
 
 export function addChildren(elementNode, children) {
-  const updateFunctions = children.map(addChild.bind(null, elementNode));
-
-  return runUpdateFunctions.bind(null, updateFunctions);
+  return children.reduce((updates, child) => {
+    return updates.concat(addChild(elementNode, child));
+  }, []);
 }
 
 export function addChild(elementNode, child) {
@@ -75,7 +71,7 @@ export function addChild(elementNode, child) {
       document.createTextNode(child)
     );
 
-    return noop;
+    return [];
   }
 
   return child(elementNode);

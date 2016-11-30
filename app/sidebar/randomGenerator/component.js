@@ -1,4 +1,4 @@
-import {dispatchAction, pipe, noop} from 'utils';
+import {dispatchAction, pipe} from 'utils';
 import {allDiagrams} from 'bpmn';
 
 const template = `
@@ -17,7 +17,7 @@ export function component({createAddDiagramAction}) {
       dispatchAction
     ));
 
-    return noop;
+    return [];
   };
 }
 component.composable = true;

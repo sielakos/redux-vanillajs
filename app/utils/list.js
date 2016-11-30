@@ -1,5 +1,6 @@
 import {includes} from './includes';
 import {addChildren} from './jsx';
+import {runUpdate} from './runUpdate';
 import {$document} from 'dom';
 
 export function List({key, children}) {
@@ -55,7 +56,10 @@ function wrapWithKey(keyProperty, value, index) {
 
 function getNewNode(templateNode, children) {
   const node = templateNode.cloneNode(true);
-  const update = addChildren(node, children);
+  const update = runUpdate.bind(
+    null,
+    addChildren(node, children)
+  );
 
   return {
     node,

@@ -1,7 +1,7 @@
 import {pipe} from './pipe';
 import {get} from './get';
-import {runUpdateFunctions} from './runUpdateFunctions';
-import {addChild} from './jsx';
+import {addChildren} from './jsx';
+import {runUpdate} from './runUpdate';
 
 export function connect(getProperties, component) {
   if (typeof getProperties === 'string') {
@@ -9,7 +9,10 @@ export function connect(getProperties, component) {
   }
 
   return node => {
-    const updateComponent = component(node);
+    const updateComponent = runUpdate.bind(
+      null,
+      component(node)
+    );
 
     return pipe(getProperties, updateComponent);
   };
@@ -25,11 +28,11 @@ export function JsxConnect({selector, children}) {
   }
 
   return (node) => {
-    const updateFunctions = children.map(addChild.bind(null, node));
+    const updateFunctions = addChildren(node, children);
 
     return pipe(
       selector,
-      runUpdateFunctions.bind(null, updateFunctions)
+      runUpdate.bind(null, updateFunctions)
     );
   };
 }

@@ -1,5 +1,6 @@
 import {updateOnlyWhenStateChanges} from './updateOnlyWhenStateChanges';
 import {noop} from './noop';
+import {runUpdate} from './runUpdate';
 
 const emptyLastUsed = {
   component: undefined,
@@ -19,7 +20,7 @@ export function conditional(conditionEntries) {
         lastUsed = updateLastUsed(component, node);
       }
 
-      lastUsed.update(state);
+      runUpdate(lastUsed.update, state);
     });
   }
 }

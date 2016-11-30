@@ -1,4 +1,4 @@
-import {noop, dispatchAction} from 'utils';
+import {dispatchAction} from 'utils';
 import {ADD_DIAGRAM} from 'sidebar';
 import {$FileReader} from 'dom';
 
@@ -34,5 +34,5 @@ export function component(node) {
     reader.readAsText(file);
   });
 
-  return noop;
+  return [];
 }

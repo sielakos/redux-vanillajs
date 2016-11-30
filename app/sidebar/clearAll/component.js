@@ -15,7 +15,7 @@ function createComponent(node) {
     type: CLEAR_ALL
   }));
 
-  return noop;
+  return [];
 }
 
 export const component = conditional([

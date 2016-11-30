@@ -3,9 +3,15 @@ import 'styles.scss';
 import {createStore} from 'redux';
 import {reducer, component} from 'main';
 import {ACTION_EVENT_NAME} from 'actionEventName';
+import {runUpdate} from 'utils';
 
 const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-const updateComponent = component(document.getElementById('app'));
+const updateComponent = runUpdate.bind(
+  null,
+  component(
+    document.getElementById('app')
+  )
+);
 
 updateComponent(store.getState());
 
