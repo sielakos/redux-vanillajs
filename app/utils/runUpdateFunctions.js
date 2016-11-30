@@ -1,6 +1,6 @@
 import {flatten} from './flatten';
 
-export function runUpdateFunctions(updateFunctions, state) {
+export function runUpdateFunctions(runner, updateFunctions, state) {
   flatten(updateFunctions)
-    .forEach(update => update(state));
+    .forEach(update => runner(update, state));
 }

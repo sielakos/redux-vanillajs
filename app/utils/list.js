@@ -1,6 +1,7 @@
 import {includes} from './includes';
 import {addChildren} from './jsx';
 import {runUpdate} from './runUpdate';
+import {DESTROY_EVENT} from './events';
 import {$document} from 'dom';
 
 export function List({key, children}) {
@@ -56,15 +57,24 @@ function wrapWithKey(keyProperty, value, index) {
 
 function getNewNode(templateNode, eventsBus, children) {
   const node = templateNode.cloneNode(true);
+  const updates = addChildren(node, eventsBus, children);
   const update = runUpdate.bind(
     null,
-    addChildren(node, eventsBus, children)
+    updates
   );
 
   return {
     node,
-    update
-  }
+    update,
+    fireEvent: fireEvent.bind(null, updates)
+  };
+}
+
+function fireEvent(updates, name, data) {
+  updates
+    .forEach(({eventsBus}) => {
+      eventsBus.fireEvent(name, data);
+    });
 }
 
 function render(startMarker, nodes, valuesWithKey, getNewNode) {
@@ -85,13 +95,14 @@ function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
   };
 
   const {nodes: newNodes} = valuesWithKey.reduce(({nodes, previous}, {key, value}) => {
-    const {node, update} = getNextNode(key);
+    const {node, update, ...rest} = getNextNode(key);
 
     insertAfter(node, previous);
 
     update(value);
 
     nodes.push({
+      ...rest,
       node,
       update,
       key
@@ -103,11 +114,17 @@ function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
     };
   }, startValue);
 
+  fireDestroyEventForNotUsed(notUsed);
+
   return newNodes;
 
   function getNextNode(key) {
     return updated[key] || notUsed.shift() || getNewNode();
   }
+}
+
+function fireDestroyEventForNotUsed(notUsed) {
+  notUsed.forEach(({fireEvent}) => fireEvent(DESTROY_EVENT))
 }
 
 function splitNodes(nodes, valuesWithKey) {

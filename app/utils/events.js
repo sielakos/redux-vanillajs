@@ -1,6 +1,7 @@
 import {secureInterface} from './secureInterface';
 
 export const ALL_EVENTS = '$all';
+export const DESTROY_EVENT = '$destroy';
 
 export function createEventsBus(father) {
   const instance = new Events(father);

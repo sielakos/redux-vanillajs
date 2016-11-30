@@ -18,4 +18,4 @@ export {jsx, addChild, addChildren} from './jsx';
 export {runUpdate} from './runUpdate';
 export {flatten} from './flatten';
 export {secureInterface} from './secureInterface';
-export {createEventsBus, ALL_EVENTS} from './events';
+export {createEventsBus, ALL_EVENTS, DESTROY_EVENT} from './events';

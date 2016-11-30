@@ -76,5 +76,10 @@ export function addChild(elementNode, eventsBus, child) {
     return [];
   }
 
-  return child(elementNode, createEventsBus(eventsBus));
+  const childEventBus = createEventsBus(eventsBus);
+
+  return {
+    update: child(elementNode, childEventBus),
+    eventsBus: childEventBus
+  };
 }
