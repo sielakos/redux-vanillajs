@@ -4,10 +4,16 @@ $color-blue: #9c9bff;
 $color-dark-blue: darken($color-blue, 15%);
 
 $color-green: #9bff9c;
+$color-dark-green: darken($color-green, 15%);
 
 html {
   font-size: 16px;
   color: $color-dark-blue;
+}
+
+a {
+  color: $color-dark-green;
+  font-weight: 700;
 }
 
 .content {

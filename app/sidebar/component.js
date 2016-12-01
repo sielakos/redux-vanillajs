@@ -7,9 +7,7 @@ import {component as SearchComponent} from './search';
 
 const SidebarComponent = (<div>
   Some text: <br />
-  <div className="clear-all">
-    <ClearAllComponent />
-  </div>
+  <ClearAllComponent />
   <div className="add-random">
     <RandomGeneratorComponent createAddDiagramAction={({name, diagram}) => createAddDiagramAction(name, diagram)}  />
   </div>

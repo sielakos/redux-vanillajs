@@ -9,7 +9,7 @@ export function component(node, eventBus) {
   let count = 0;
   const id = setInterval(() => {
     counterElement.innerHTML = ++count;
-  }, 10000);
+  }, 1000);
 
   eventBus.on(DESTROY_EVENT, () => {
     clearInterval(id);

@@ -1,13 +1,14 @@
-import {conditional, dispatchAction, noop} from 'utils';
+import {Match, Case, dispatchAction, jsx} from 'utils';
 
 export const CLEAR_ALL = 'CLEAR_ALL';
 
-const template = `
-  <button class="clear-all-btn" type="button">clear all</button>
-`;
+const template = <button class="clear-all-btn" type="button">
+  clear all
+</button>;
 
-function createComponent(node) {
-  node.innerHTML = template;
+
+function ClearAll(node, eventsBus) {
+  template(node, eventsBus);
 
   const clearAllBtn = node.querySelector('.clear-all-btn');
 
@@ -18,9 +19,10 @@ function createComponent(node) {
   return [];
 }
 
-export const component = conditional([
-  {
-    predicate: ({list}) => list.length > 0,
-    component: createComponent
-  }
-]);
+export const component = <div className="clear-all">
+  <Match>
+    <Case predicate={({list}) => list.length > 0}>
+      <ClearAll/>
+    </Case>
+  </Match>
+</div>;

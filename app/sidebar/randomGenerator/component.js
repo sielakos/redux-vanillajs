@@ -6,16 +6,24 @@ const template = `
 `;
 
 export function component({createAddDiagramAction}) {
+  const dispatchRandomDiagram = pipe(
+    getRandomDiagram,
+    createAddDiagramAction,
+    dispatchAction
+  );
+
+  window.addRandomDiagrams = (count) => {
+    for (let i = 0; i < count; i++) {
+      dispatchRandomDiagram();
+    }
+  };
+
   return (node) => {
     node.innerHTML = template;
 
     const randomBtn = node.querySelector('.random-btn');
 
-    randomBtn.addEventListener('click', pipe(
-      getRandomDiagram,
-      createAddDiagramAction,
-      dispatchAction
-    ));
+    randomBtn.addEventListener('click', dispatchRandomDiagram);
 
     return [];
   };

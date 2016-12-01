@@ -3,26 +3,28 @@ import {connect} from 'utils';
 import {getDiagram} from 'sidebar';
 
 function createComponent(node) {
-  const viewer = new Viewer({
-    container: node,
-    height: '400'
-  });
+  // const viewer = new Viewer({
+  //   container: node,
+  //   height: '400'
+  // });
+  //
+  // let lastName;
+  //
+  // return ({name, diagram}) => {
+  //   if (name && lastName !== name) {
+  //     lastName = name;
+  //
+  //     viewer.importXML(diagram, function(err) {
+  //       if (err) {
+  //         node.innerHTML = `Could not load diagram ${name}, got error ${err}`;
+  //       }
+  //
+  //       resetZoom(viewer);
+  //     });
+  //   }
+  // };
 
-  let lastName;
-
-  return ({name, diagram}) => {
-    if (name && lastName !== name) {
-      lastName = name;
-
-      viewer.importXML(diagram, function(err) {
-        if (err) {
-          node.innerHTML = `Could not load diagram ${name}, got error ${err}`;
-        }
-
-        resetZoom(viewer);
-      });
-    }
-  };
+  return [];
 }
 
 function resetZoom(viewer) {
