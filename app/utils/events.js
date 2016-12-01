@@ -1,12 +1,8 @@
-import {secureInterface} from './secureInterface';
-
 export const ALL_EVENTS = '$all';
 export const DESTROY_EVENT = '$destroy';
 
 export function createEventsBus(father) {
-  const instance = new Events(father);
-
-  return secureInterface(instance, {extraProperties: ['on', 'subscribeToAll', 'fireEvent']});
+  return new Events(father);
 }
 
 class Events {
@@ -55,6 +51,7 @@ class Events {
   _removeAllSubscriptions() {
     this._listeners = [];
     this._subscriptions.forEach(subscription => subscription());
+    this._subscriptions = [];
   }
 
   _getEventListeners(name) {
