@@ -12,24 +12,29 @@ export function createEventsBus(father) {
 class Events {
   constructor(father) {
     this._listeners = {};
+    this._subscriptions = [];
 
     this.subscribeToAll(father);
   }
 
   subscribeToAll(events) {
     if (events) {
-      events.on(ALL_EVENTS, (event) => {
-        if (event.stopped) {
+      const subscription = events.on(ALL_EVENTS, (event) => {
+        if (event.stopped && event.name !== DESTROY_EVENT) {
           return;
         }
 
         this.fireEvent(event.name, event.data);
       });
+
+      this._subscriptions.push(subscription);
     }
   }
 
   on(name, listener) {
     this._addListenerForName(name, listener);
+
+    return this._removeListenerForName.bind(this, name);
   }
 
   fireEvent(name, data) {
@@ -37,6 +42,19 @@ class Events {
     const listeners = this._getEventListeners(name);
 
     listeners.forEach(listener => listener(event));
+
+    this._handleDestroyEvent(name);
+  }
+
+  _handleDestroyEvent(name) {
+    if (name === DESTROY_EVENT) {
+      return this._removeAllSubscriptions();
+    }
+  }
+
+  _removeAllSubscriptions() {
+    this._listeners = [];
+    this._subscriptions.forEach(subscription => subscription());
   }
 
   _getEventListeners(name) {
