@@ -58,7 +58,7 @@ class Events {
   }
 
   _removeAllSubscriptions() {
-    this._listeners = [];
+    this._listeners = {};
     this._subscriptions.forEach(subscription => subscription());
     this._subscriptions = [];
   }
@@ -84,6 +84,7 @@ class Events {
     return this._listeners[name];
   }
 }
+
 class Event {
   constructor({name, data, stopped = false}) {
     this.name = name;
