@@ -30,7 +30,7 @@ class Events {
   on(name, listener) {
     this._addListenerForName(name, listener);
 
-    return this._removeListenerForName.bind(this, name);
+    return this._removeListenerForName.bind(this, name, listener);
   }
 
   fireEvent(name, data) {
