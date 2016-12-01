@@ -57,7 +57,7 @@ function wrapWithKey(keyProperty, value, index) {
 
 function getNewNode(templateNode, eventsBus, children) {
   const node = templateNode.cloneNode(true);
-  const updates = addChildren(node, eventsBus, children);
+  const updates = addChildren(node, eventsBus, children, true);
   const update = runUpdate.bind(
     null,
     updates

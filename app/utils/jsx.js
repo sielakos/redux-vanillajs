@@ -61,13 +61,13 @@ function setAttribute(elementNode, attribute, value) {
   elementNode.setAttribute(attribute, value);
 }
 
-export function addChildren(elementNode, eventsBus, children) {
+export function addChildren(elementNode, eventsBus, children, addChildEventsBus) {
   return children.reduce((updates, child) => {
-    return updates.concat(addChild(elementNode, eventsBus, child));
+    return updates.concat(addChild(elementNode, eventsBus, child, addChildEventsBus));
   }, []);
 }
 
-export function addChild(elementNode, eventsBus, child) {
+export function addChild(elementNode, eventsBus, child, addChildEventsBus) {
   if (typeof child === 'string') {
     elementNode.appendChild(
       document.createTextNode(child)
@@ -77,9 +77,14 @@ export function addChild(elementNode, eventsBus, child) {
   }
 
   const childEventBus = createEventsBus(eventsBus);
+  const update = child(elementNode, childEventBus);
+
+  if (!addChildEventsBus) {
+    return update;
+  }
 
   return {
-    update: child(elementNode, childEventBus),
+    update,
     eventsBus: childEventBus
   };
 }
