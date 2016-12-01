@@ -6,15 +6,18 @@ const template = <button class="clear-all-btn" type="button">
   clear all
 </button>;
 
+const dispatchClearAll = dispatchAction.bind(null, {
+  type: CLEAR_ALL
+});
+
+window.dispatchClearAll = dispatchClearAll;
 
 function ClearAll(node, eventsBus) {
   template(node, eventsBus);
 
   const clearAllBtn = node.querySelector('.clear-all-btn');
 
-  clearAllBtn.addEventListener('click', dispatchAction.bind(null, {
-    type: CLEAR_ALL
-  }));
+  clearAllBtn.addEventListener('click', dispatchClearAll);
 
   return [];
 }

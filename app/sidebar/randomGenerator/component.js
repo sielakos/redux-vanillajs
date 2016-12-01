@@ -12,10 +12,22 @@ export function component({createAddDiagramAction}) {
     dispatchAction
   );
 
-  window.addRandomDiagrams = (count) => {
-    for (let i = 0; i < count; i++) {
+  window.addRandomDiagrams = (size) => {
+    for (let i = 0; i < size; i++) {
       dispatchRandomDiagram();
     }
+  };
+
+  window.startRemoveKillerTest = (rounds, size) => {
+    if (rounds < 1) {
+      return;
+    }
+
+    window.addRandomDiagrams(size);
+    setTimeout(() => {
+      window.dispatchClearAll();
+      window.startRemoveKillerTest(rounds - 1, size);
+    });
   };
 
   return (node) => {

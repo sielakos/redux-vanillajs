@@ -35,11 +35,20 @@ class Events {
 
   fireEvent(name, data) {
     const event = new Event({name, data});
-    const listeners = this._getEventListeners(name);
 
-    listeners.forEach(listener => listener(event));
+    this._fireListeners(name, event);
+    this._fireListeners(ALL_EVENTS, event);
 
     this._handleDestroyEvent(name);
+  }
+
+  _fireListeners(name, event) {
+    const listeners = this._getListenersForName(name);
+    const len = listeners.length;
+
+    for (let i = 0; i < len; i++) {
+      listeners[i](event);
+    }
   }
 
   _handleDestroyEvent(name) {
@@ -54,14 +63,10 @@ class Events {
     this._subscriptions = [];
   }
 
-  _getEventListeners(name) {
-    return this._getListenersForName(name)
-      .concat(this._getListenersForName(ALL_EVENTS));
-  }
-
   _addListenerForName(name, listener) {
-    this._listeners[name] = this._getListenersForName(name)
-      .concat(listener);
+    const listeners = this._getListenersForName(name);
+
+    listeners.push(listener);
 
     return this._removeListenerForName.bind(this, name, listener);
   }

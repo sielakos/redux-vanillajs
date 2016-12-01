@@ -1,8 +1,10 @@
-import {runUpdateFunctions} from './runUpdateFunctions';
-
 export function runUpdate(update, state) {
   if (Array.isArray(update)) {
-    return runUpdateFunctions(runUpdate, update, state);
+    for (let childUpdate of update) {
+      runUpdate(childUpdate, state);
+    }
+
+    return;
   }
 
   if (update.update) {

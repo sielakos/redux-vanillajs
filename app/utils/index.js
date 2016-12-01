@@ -1,5 +1,4 @@
 export {mountComponents} from './mountComponents';
-export {runUpdateFunctions} from './runUpdateFunctions';
 export {pipe} from './pipe';
 export {connect, JsxConnect} from './connect';
 export {get} from './get';
