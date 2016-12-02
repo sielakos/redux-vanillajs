@@ -88,14 +88,14 @@ function removeNodes(nodes) {
 }
 
 function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
-  const {updated, notUsed} = splitNodes(nodes, valuesWithKey);
+  const notUsed = splitNodes(nodes, valuesWithKey);
   const startValue = {
     nodes: [],
     previous: startMarker
   };
 
-  const {nodes: newNodes} = valuesWithKey.reduce(({nodes, previous}, {key, value}) => {
-    const {node, update, ...rest} = getNextNode(key);
+  const {nodes: newNodes} = valuesWithKey.reduce(({nodes, previous}, {node: updatedNode, key, value}) => {
+    const {node, update, ...rest} = updatedNode || getNextNode();
 
     insertAfter(node, previous);
 
@@ -118,8 +118,8 @@ function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
 
   return newNodes;
 
-  function getNextNode(key) {
-    return updated[key] || notUsed.shift() || getNewNode();
+  function getNextNode() {
+    return notUsed.shift() || getNewNode();
   }
 }
 
@@ -128,22 +128,21 @@ function fireDestroyEventForNotUsed(notUsed) {
 }
 
 function splitNodes(nodes, valuesWithKey) {
-  const startValue = {
-    updated: {},
-    notUsed: []
-  };
-  const valuesKeys = valuesWithKey.map(({key}) => key);
+  const nodesByKey = nodes.reduce((nodesByKey, node) => {
+    nodesByKey[node.key] = node;
 
-  return nodes
-    .reduce(({updated, notUsed}, nodeEntry) => {
-      if (nodeEntry.key && includes(valuesKeys, nodeEntry.key)) {
-        updated[nodeEntry.key] = nodeEntry;
-      } else {
-        notUsed.push(nodeEntry);
-      }
+    return nodesByKey;
+  }, {});
 
-      return {updated, notUsed};
-    }, startValue);
+  valuesWithKey
+    .forEach(valueWithKey => {
+      valueWithKey.node = nodesByKey[valueWithKey.key];
+      delete nodesByKey[valueWithKey.key];
+    });
+
+  return Object
+    .keys(nodesByKey)
+    .map(key => nodesByKey[key]);
 }
 
 function insertAfter(node, target) {
