@@ -18,15 +18,42 @@ export function component({createAddDiagramAction}) {
     }
   };
 
-  window.startRemoveKillerTest = (rounds, size) => {
+  const _startRemoveKillerTest = (rounds, size, callback) => {
     if (rounds < 1) {
-      return;
+      return callback();
     }
 
     window.addRandomDiagrams(size);
     setTimeout(() => {
       window.dispatchClearAll();
-      window.startRemoveKillerTest(rounds - 1, size);
+      _startRemoveKillerTest(rounds - 1, size, callback);
+    });
+  };
+
+  window.startRemoveKillerTest = (rounds, size) => {
+    const startTime = new Date().getTime();
+    const numberOfUpdates = rounds * (size + 1);
+    const numberOfAdd = rounds * size;
+    const numberOfClear = rounds;
+
+    _startRemoveKillerTest(rounds, size, () => {
+      const endTime = new Date().getTime();
+      const totalTime = endTime - startTime;
+      const updatesPerSecond = 1000 * numberOfUpdates / totalTime;
+
+      const msg =
+        `Performed ${numberOfUpdates} update actions:
+        Rounds: ${rounds},
+        Size of round: ${size},
+        Add actions: ${numberOfAdd}
+        Clear actions: ${numberOfClear}
+        Total time: ${totalTime} ms
+        Speed: ${updatesPerSecond} updates / second`
+          .split('\n')
+          .map(line => line.trim())
+          .join('\n');
+
+      console.log(msg);
     });
   };
 
