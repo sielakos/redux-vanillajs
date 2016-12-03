@@ -15,7 +15,7 @@ const SidebarComponent = (<div>
   <ul className="list">
     <li className="sidebar-item">
       <JsxConnect selector="list">
-        <List key="name">
+        <List key="name" onlyChild={true}>
           <ItemComponent />
         </List>
       </JsxConnect>

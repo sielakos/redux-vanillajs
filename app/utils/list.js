@@ -4,7 +4,7 @@ import {runUpdate} from './runUpdate';
 import {DESTROY_EVENT} from './events';
 import {$document} from 'dom';
 
-export function List({key, children}) {
+export function List({onlyChild = false, key, children}) {
   return (templateNode, eventsBus) => {
     let nodes = [];
     let parent = templateNode.parentNode;
@@ -24,7 +24,8 @@ export function List({key, children}) {
         startMarker,
         nodes,
         valuesWithKey,
-        getNewNode.bind(null, templateNode, eventsBus, children)
+        getNewNode.bind(null, templateNode, eventsBus, children),
+        onlyChild ? parent : null
       );
     };
   };
@@ -77,20 +78,24 @@ function fireEvent(updates, name, data) {
     });
 }
 
-function render(startMarker, nodes, valuesWithKey, getNewNode) {
-  removeNodes(nodes);
+function render(startMarker, nodes, valuesWithKey, getNewNode, parent) {
+  removeNodes(nodes, parent);
 
-  return insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode);
+  return insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent);
 }
 
-function removeNodes(nodes) {
-  nodes.forEach(({node}) => node.parentNode.removeChild(node));
+function removeNodes(nodes, parent) {
+  if (!parent) {
+    nodes.forEach(({node}) => node.parentNode.removeChild(node));
+  } else {
+    parent.innerHTML = '';
+  }
 }
 
-function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
+function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent) {
   const notUsed = splitNodes(nodes, valuesWithKey);
 
-  const fragment = document.createDocumentFragment();
+  const fragment = parent || document.createDocumentFragment();
 
   const newNodes = valuesWithKey.map(({node: updatedNode, key, value}) => {
     const {node, update, ...rest} = updatedNode || getNextNode();
@@ -106,7 +111,9 @@ function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
     };
   });
 
-  insertAfter(fragment, startMarker);
+  if (!parent) {
+    insertAfter(fragment, startMarker);
+  }
 
   newNodes.forEach(({update, value}) => {
     update(value);
