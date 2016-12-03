@@ -89,30 +89,28 @@ function removeNodes(nodes) {
 
 function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode) {
   const notUsed = splitNodes(nodes, valuesWithKey);
-  const startValue = {
-    nodes: [],
-    previous: startMarker
-  };
 
-  const {nodes: newNodes} = valuesWithKey.reduce(({nodes, previous}, {node: updatedNode, key, value}) => {
+  const fragment = document.createDocumentFragment();
+
+  const newNodes = valuesWithKey.map(({node: updatedNode, key, value}) => {
     const {node, update, ...rest} = updatedNode || getNextNode();
 
-    insertAfter(node, previous);
+    fragment.appendChild(node);
 
-    update(value);
-
-    nodes.push({
+    return {
       ...rest,
       node,
       update,
+      value,
       key
-    });
-
-    return {
-      nodes,
-      previous: node
     };
-  }, startValue);
+  });
+
+  insertAfter(fragment, startMarker);
+
+  newNodes.forEach(({update, value}) => {
+    update(value);
+  });
 
   fireDestroyEventForNotUsed(notUsed);
 
