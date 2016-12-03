@@ -53,7 +53,7 @@ function removeChild(node, {eventsBus} = {}) {
   node.innerHTML = '';
 
   if (eventsBus) {
-    eventsBus.fireEvent(DESTROY_EVENT);
+    eventsBus.fireEvent(DESTROY_EVENT, {});
   }
 }
 
