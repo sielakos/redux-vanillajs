@@ -25,14 +25,21 @@ export function component({createAddDiagramAction}) {
 
     window.addRandomDiagrams(size);
     setTimeout(() => {
-      window.dispatchClearAll();
-      _startRemoveKillerTest(rounds - 1, size, callback);
+      const searchTerm = Math.round(Math.random() * 100).toString();
+
+      window.searchDiagrams(searchTerm);
+
+      setTimeout(() => {
+        window.searchDiagrams('');
+        window.dispatchClearAll();
+        _startRemoveKillerTest(rounds - 1, size, callback);
+      });
     });
   };
 
   window.startRemoveKillerTest = (rounds, size) => {
     const startTime = new Date().getTime();
-    const numberOfUpdates = rounds * (size + 1);
+    const numberOfUpdates = rounds * (size + 2);
     const numberOfAdd = rounds * size;
     const numberOfClear = rounds;
 
@@ -47,6 +54,7 @@ export function component({createAddDiagramAction}) {
         Size of round: ${size},
         Add actions: ${numberOfAdd}
         Clear actions: ${numberOfClear}
+        Search actions: ${rounds}
         Total time: ${totalTime} ms
         Speed: ${updatesPerSecond} updates / second`
           .split('\n')

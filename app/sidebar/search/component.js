@@ -1,4 +1,4 @@
-import {dispatchAction, inputField, jsx} from 'utils';
+import {dispatchAction, inputField, jsx, pipe} from 'utils';
 
 const template = <input component={inputField('search')} type="text" />;
 
@@ -7,6 +7,11 @@ export function component({createSearchAction}) {
     const update = template(node, eventsBus);
 
     const searchField = node.querySelector('input');
+
+    window.searchDiagrams = pipe(
+      createSearchAction,
+      dispatchAction
+    );
 
     searchField.addEventListener('keyup', () => {
       dispatchAction(
