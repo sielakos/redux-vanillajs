@@ -79,7 +79,9 @@ function fireEvent(updates, name, data) {
 }
 
 function render(startMarker, nodes, valuesWithKey, getNewNode, parent) {
-  removeNodes(nodes, parent);
+  if (nodes.length) {
+    removeNodes(nodes, parent);
+  }
 
   return insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent);
 }
