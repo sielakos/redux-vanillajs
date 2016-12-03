@@ -39,7 +39,7 @@ export function component({createAddDiagramAction}) {
 
   window.startRemoveKillerTest = (rounds, size) => {
     const startTime = new Date().getTime();
-    const numberOfUpdates = rounds * (size + 2);
+    const numberOfUpdates = rounds * (size + 3);
     const numberOfAdd = rounds * size;
     const numberOfClear = rounds;
 
@@ -54,7 +54,7 @@ export function component({createAddDiagramAction}) {
         Size of round: ${size},
         Add actions: ${numberOfAdd}
         Clear actions: ${numberOfClear}
-        Search actions: ${rounds}
+        Search actions: ${rounds * 2}
         Total time: ${totalTime} ms
         Speed: ${updatesPerSecond} updates / second`
           .split('\n')

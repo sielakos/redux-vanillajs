@@ -95,7 +95,7 @@ function removeNodes(nodes, parent) {
 function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent) {
   const notUsed = splitNodes(nodes, valuesWithKey);
 
-  const fragment = parent || document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
 
   const newNodes = valuesWithKey.map(({node: updatedNode, key, value}) => {
     const {node, update, ...rest} = updatedNode || getNextNode();
@@ -111,7 +111,9 @@ function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent)
     };
   });
 
-  if (!parent) {
+  if (parent) {
+    parent.appendChild(fragment);
+  } else {
     insertAfter(fragment, startMarker);
   }
 
