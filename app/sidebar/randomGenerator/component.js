@@ -18,28 +18,35 @@ export function component({createAddDiagramAction}) {
     }
   };
 
+  const searchRandomTerm = (callback) => {
+    setTimeout(() => {
+      const searchTerm = Math.round(Math.random() * 100).toString();
+
+      window.searchDiagrams(searchTerm);
+
+      setTimeout(callback);
+    });
+  };
+
   const _startRemoveKillerTest = (rounds, size, callback) => {
     if (rounds < 1) {
       return callback();
     }
 
     window.addRandomDiagrams(size);
-    setTimeout(() => {
-      const searchTerm = Math.round(Math.random() * 100).toString();
 
-      window.searchDiagrams(searchTerm);
-
-      setTimeout(() => {
+    searchRandomTerm(
+      searchRandomTerm.bind(null, ()=> {
         window.searchDiagrams('');
         window.dispatchClearAll();
         _startRemoveKillerTest(rounds - 1, size, callback);
-      });
-    });
+      })
+    );
   };
 
   window.startRemoveKillerTest = (rounds, size) => {
     const startTime = new Date().getTime();
-    const numberOfUpdates = rounds * (size + 3);
+    const numberOfUpdates = rounds * (size + 4);
     const numberOfAdd = rounds * size;
     const numberOfClear = rounds;
 
@@ -54,7 +61,7 @@ export function component({createAddDiagramAction}) {
         Size of round: ${size},
         Add actions: ${numberOfAdd}
         Clear actions: ${numberOfClear}
-        Search actions: ${rounds * 2}
+        Search actions: ${rounds * 3}
         Total time: ${totalTime} ms
         Speed: ${updatesPerSecond} updates / second`
           .split('\n')
