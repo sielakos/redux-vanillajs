@@ -4,13 +4,13 @@ import {CHANGE_DIAGRAM_NAME, EDIT_SIDEBAR_ITEM} from './reducer';
 import {SELECT_DIAGRAM} from 'bpmnViewer';
 import {component as IntervalCounter} from 'intervalCounter';
 
-const template = <div>
+const template = <li className="sidebar-item">
   <a class="sidebar-item-name"></a>
   <input class="sidebar-item-name-field hidden" type="text" />
   <button class="sidebar-item-remove" type="button">remove</button>
   <button class="sidebar-item-rename" type="button">rename</button>
   <IntervalCounter />
-</div>;
+</li>;
 
 export function component(node, eventsBus) {
   let lastName;

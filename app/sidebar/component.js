@@ -13,13 +13,11 @@ const SidebarComponent = (<div>
   </div>
   <div className="search"><SearchComponent createSearchAction={createSearchAction} /></div>
   <ul className="list">
-    <li className="sidebar-item">
-      <JsxConnect selector="list">
-        <List key="name" onlyChild={true}>
-          <ItemComponent />
-        </List>
-      </JsxConnect>
-    </li>
+    <JsxConnect selector="list">
+      <List key="name" onlyChild={true}>
+        <ItemComponent />
+      </List>
+    </JsxConnect>
   </ul>
 </div>);
 

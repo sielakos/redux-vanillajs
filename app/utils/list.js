@@ -5,13 +5,11 @@ import {DESTROY_EVENT} from './events';
 import {$document} from 'dom';
 
 export function List({onlyChild = false, key, children}) {
-  return (templateNode, eventsBus) => {
+  return (parent, eventsBus) => {
     let nodes = [];
-    let parent = templateNode.parentNode;
     const startMarker = $document.createComment('LIST START');
 
-    parent.insertBefore(startMarker, templateNode);
-    parent.removeChild(templateNode);
+    parent.appendChild(startMarker);
 
     return (values) => {
       const valuesWithKey = values.map(
@@ -24,7 +22,7 @@ export function List({onlyChild = false, key, children}) {
         startMarker,
         nodes,
         valuesWithKey,
-        getNewNode.bind(null, templateNode, eventsBus, children),
+        getNewNode.bind(null, eventsBus, children),
         onlyChild ? parent : null
       );
     };
@@ -56,8 +54,8 @@ function wrapWithKey(keyProperty, value, index) {
   };
 }
 
-function getNewNode(templateNode, eventsBus, children) {
-  const node = templateNode.cloneNode(true);
+function getNewNode(eventsBus, children) {
+  const node = document.createDocumentFragment();
   const updates = addChildren(node, eventsBus, children, true);
   const update = runUpdate.bind(
     null,
@@ -65,7 +63,7 @@ function getNewNode(templateNode, eventsBus, children) {
   );
 
   return {
-    node,
+    children: Array.prototype.slice.call(node.children),
     update,
     fireEvent: fireEvent.bind(null, updates)
   };
@@ -100,13 +98,15 @@ function insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent)
   const fragment = document.createDocumentFragment();
 
   const newNodes = valuesWithKey.map(({node: updatedNode, key, value}) => {
-    const {node, update, ...rest} = updatedNode || getNextNode();
+    const {children, update, ...rest} = updatedNode || getNextNode();
 
-    fragment.appendChild(node);
+    children.forEach(node => {
+      fragment.appendChild(node);
+    });
 
     return {
       ...rest,
-      node,
+      children,
       update,
       value,
       key
