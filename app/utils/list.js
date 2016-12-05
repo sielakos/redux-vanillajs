@@ -81,7 +81,13 @@ function render(startMarker, nodes, valuesWithKey, getNewNode, parent) {
     removeNodes(nodes, parent);
   }
 
-  return insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent);
+  if (valuesWithKey.length > 0) {
+    return insertValueNodes(startMarker, nodes, valuesWithKey, getNewNode, parent);
+  } else {
+    fireDestroyEventForNotUsed(nodes);
+
+    return [];
+  }
 }
 
 function removeNodes(nodes, parent) {
